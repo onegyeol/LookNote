@@ -204,7 +204,7 @@ class MainActivity : AppCompatActivity() {
 
     // 날씨 API 요청해서 화면에 보여주는 함수
     private fun fetchWeatherData(lat: Double, lon: Double) {
-        val apiKey = "api" // 발급받은 api 키 (openweather)
+        val apiKey = "3eff70eaa327f6699498cf8ed9d2754a" // 발급받은 api 키 (openweather)
         val url = "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey&units=metric&lang=kr"
 
         val request = Request.Builder().url(url).build()
