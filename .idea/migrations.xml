@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectMigrations">
+    <option name="MigrateToGradleLocalJavaHome">
+      <set>
+        <option value="$PROJECT_DIR$/../../../대학교 4-1/모바일프로그래밍/LookNote" />
+      </set>
+    </option>
+  </component>
+</project>

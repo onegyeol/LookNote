@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 상단 로고 -->
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@drawable/logo2"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Look Note 로고" />
+
+        <!-- 이미지 창이랑 이미지 업로드 버튼 함께 띄우기 위해 -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:id="@+id/imagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="#E0E0E0"
+                android:contentDescription="미리보기 이미지" />
+
+            <Button
+                android:id="@+id/buttonUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="image upload"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/matcha"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="12dp" />
+        </FrameLayout>
+
+        <!-- 입력칸 -->
+        <EditText
+            android:id="@+id/editTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="👕 상의"
+            android:background="@android:color/transparent"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:layout_marginBottom="12dp"
+            android:drawableBottom="@drawable/line" />
+
+        <EditText
+            android:id="@+id/editBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="👖 하의"
+            android:background="@android:color/transparent"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:layout_marginBottom="12dp"
+            android:drawableBottom="@drawable/line" />
+
+        <EditText
+            android:id="@+id/editShoes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="👟 신발"
+            android:background="@android:color/transparent"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:layout_marginBottom="12dp"
+            android:drawableBottom="@drawable/line" />
+
+        <EditText
+            android:id="@+id/editEtc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="🧢 기타"
+            android:background="@android:color/transparent"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:layout_marginBottom="16dp"
+            android:drawableBottom="@drawable/line" />
+
+        <!-- 룩 노트 영역 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="👗 Look Note"
+            android:textSize="14sp"
+            android:textColor="@color/matcha"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/editMemo"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@drawable/memo"
+            android:hint="오늘 이 옷을 입고 어디에 놀러갔는지 등에 대해 자유롭게 적어보아요."
+            android:gravity="top|start"
+            android:padding="12dp"
+            android:textSize="14sp"
+            android:inputType="textMultiLine"
+            android:layout_marginBottom="24dp" />
+
+        <!-- 저장 버튼 -->
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="upload"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/matcha"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp" />
+    </LinearLayout>
+</ScrollView>
