@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -32,7 +33,7 @@ class EditLookActivity : AppCompatActivity() {
         val etcEdit = findViewById<EditText>(R.id.editEtc)
         val memoEdit = findViewById<EditText>(R.id.editMemo)
         val saveButton = findViewById<Button>(R.id.buttonSave)
-        val imageEdit = findViewById<Button>(R.id.imageEdit) // 새로 추가(레이아웃에도 버튼 추가 필요!)
+        val imageEdit = findViewById<Button>(R.id.imageEdit)
 
         // 전달받은 데이터 불러오기
         currentDate = intent.getStringExtra("date")
@@ -64,27 +65,30 @@ class EditLookActivity : AppCompatActivity() {
             val etc = etcEdit.text.toString()
             val memo = memoEdit.text.toString()
 
-            currentDate?.let { date ->
-                val updatedNote = LookNoteEntity(
-                    date = date,
-                    imageUri = currentImageUri ?: "",
-                    top = top,
-                    bottom = bottom,
-                    shoes = shoes,
-                    etc = etc,
-                    memo = memo
-                )
+            Log.d("EditLookActivity", "저장값 → date=$currentDate, top=$top, bottom=$bottom, shoes=$shoes, etc=$etc, memo=$memo, imageUri=$currentImageUri")
 
+            currentDate?.let { date ->
                 lifecycleScope.launch {
                     LookNoteDB.getInstance(this@EditLookActivity)
                         .lookNoteDao()
-                        .updateNote(updatedNote)
+                        .updateByDate(
+                            date = date,
+                            imageUri = currentImageUri ?: "",
+                            top = top,
+                            bottom = bottom,
+                            shoes = shoes,
+                            etc = etc,
+                            memo = memo
+                        )
 
                     Toast.makeText(this@EditLookActivity, "수정 완료!", Toast.LENGTH_SHORT).show()
-                    finish() // 화면 닫기
+
+                    setResult(Activity.RESULT_OK)
+                    finish()
                 }
             }
         }
+
     }
 
     // 사진 선택 결과 처리
