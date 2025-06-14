@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.view.CalendarView
@@ -161,6 +162,7 @@ class MainActivity : AppCompatActivity() {
             val notes = LookNoteDB.getInstance(this@MainActivity).lookNoteDao().getAll()
             notes.forEach {
                 Log.d("DB확인", "날짜=${it.date}, 이미지=${it.imageUri} 상의=${it.top}, 하의=${it.bottom}, 신발=${it.shoes}, 기타=${it.etc}, 메모=${it.memo}")
+
             }
         }
     }
@@ -190,15 +192,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 위치 받아와서 날씨 정보 가져오는 함수
+    /// 위치 받아와서 날씨 정보 가져옴
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     private fun fetchLocationAndWeather() {
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            location?.let {
-                fetchWeatherData(it.latitude, it.longitude)
-            } ?: run {
-                Toast.makeText(this, "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
+        val locationRequest = com.google.android.gms.location.LocationRequest.create().apply {
+            priority = com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 10000
+            fastestInterval = 5000
+            numUpdates = 1
+        }
+
+        val locationCallback = object : com.google.android.gms.location.LocationCallback() {
+            override fun onLocationResult(locationResult: com.google.android.gms.location.LocationResult) {
+                val location = locationResult.lastLocation
+                if (location != null) {
+                    Log.d("위치좌표", "lat=${location.latitude}, lon=${location.longitude}")
+                    fetchWeatherData(location.latitude, location.longitude)
+                } else {
+                    Toast.makeText(this@MainActivity, "정확한 위치를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+                // 위치 요청 종료
+                fusedLocationClient.removeLocationUpdates(this)
             }
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, android.os.Looper.getMainLooper())
         }
     }
 
