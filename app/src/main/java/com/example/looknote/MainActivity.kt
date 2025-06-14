@@ -38,7 +38,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    // 위치 정보 가져올 때 사용하는 변수
+    // 위치 정보 가져올때 사용
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_PERMISSION_REQUEST_CODE = 100
 
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         // 오늘 날짜 가져오기
         val today = LocalDate.now()
 
-        // 날짜 하나하나에 대한 뷰 바인딩
+        // 날짜에 대한 뷰 바인딩
         calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
             override fun create(view: View): DayViewContainer = DayViewContainer(view)
 
