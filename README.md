@@ -25,3 +25,104 @@
 ## 📱 실행 화면
 ![image](https://github.com/user-attachments/assets/79c0fa30-e1e5-41a0-95e0-d0531450954f)
 ![image](https://github.com/user-attachments/assets/2a31f2da-aad4-46dd-ac64-07c2ea8ab4a8)
+
+
+## ⚽트러블슈팅
+### 1. Room DB 데이터 변경이 화면에 반영되지 않음
+
+#### 문제
+
+- 데이터를 삽입하거나 삭제한 후에도 UI가 즉시 갱신되지 않음.
+
+#### 원인
+
+- `LiveData`나 `Flow`를 사용하지 않고 단순 `suspend` 함수만 사용했기 때문.
+- 즉시 UI 갱신을 원할 경우 `Flow`를 observe해야 함.
+- `getAllFlow()` 라는 메서드 추가
+
+#### 해결
+
+```
+//@DAO
+ @Query("SELECT * FROM look_note ORDER BY id DESC")
+fun getAllFlow(): Flow<List<LookNoteEntity>>
+
+lifecycleScope.launch {
+    LookNoteDB.getInstance(context).lookNoteDao().getAllFlow().collect { notes ->
+        adapter.submitList(notes)
+    }
+}
+
+```
+
+---
+
+### 2. 글꼴 PretendardVariable.ttf의 weight가 적용되지 않음
+
+#### 문제
+
+- `TextView`에서 `android:fontWeight="700"` 등을 사용해도 weight가 적용되지 않음.
+
+#### 원인
+
+- `fontFamily="@font/pretendard_variable"` 사용 시 `TextAppearance`와 연동이 잘 안 되는 경우 발생.
+
+#### 해결
+
+```
+android:textFontWeight="200" // 이렇게 사용하기
+```
+
+---
+
+### 3. 새롭게 만든 코틀린 파일이 적용되지 않음
+
+#### 문제
+
+- 수정 버튼을 눌러도 만든 페이지로 이동하지 않음.
+
+#### 원인
+
+- AndroidManifest에 등록이 안 되어 있음.
+
+#### 해결
+
+```
+<activity android:name=".EditLookActivity" />
+```
+
+---
+
+### 4. 삭제/수정 이후에도 MainActivity에서 변경사항이 보이지 않음
+
+#### 원인
+
+- DB 변경 후 새로 데이터를 로드하지 않음.
+- Fragment나 Activity의 `onResume()`에 갱신 코드를 추가하지 않음.
+
+#### 해결
+
+```
+override fun onResume() {
+    super.onResume()
+    loadData() // 이 안에서 DB를 다시 조회하고 RecyclerView 갱신
+}
+
+```
+
+---
+
+### 5. 위치 사용 문제
+
+#### 문제
+
+- 휴대폰의 기본 위치가 Google 본사(Mountain View)로 설정돼 있음
+
+#### 해결
+
+- 휴대폰 실행 실행
+- 오른쪽 상단 ⋮ → `Location` 메뉴 선택
+- 
+![image](https://github.com/user-attachments/assets/e0b88fc8-3406-4ff5-82bc-6f78bd2758e0)
+
+- 실행하는 기기의 Location을 한국으로 바꿔준 뒤 `Set Location` 버튼 클릭
