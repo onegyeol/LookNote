@@ -30,6 +30,28 @@ interface LookNoteDao {
     fun getAllFlow(): Flow<List<LookNoteEntity>>
 
     // 수정 시 업데이트 위함
-    @Update
-    suspend fun updateNote(note: LookNoteEntity)
+    @Query("""
+                UPDATE look_note
+                SET imageUri = :imageUri,
+                    top = :top,
+                    bottom = :bottom,
+                    shoes = :shoes,
+                    etc = :etc,
+                    memo = :memo
+                WHERE date = :date
+            """)
+    suspend fun updateByDate(
+        date: String,
+        imageUri: String,
+        top: String,
+        bottom: String,
+        shoes: String,
+        etc: String,
+        memo: String
+    )
+
+
+    @Query("SELECT * FROM look_note WHERE date = :date LIMIT 1")
+    suspend fun getNoteByDate(date: String): LookNoteEntity?
+
 }
